@@ -6,19 +6,18 @@ const connectLivereload = require('connect-livereload');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// LiveReload server
+// Live reloads
 const liveReloadServer = livereload.createServer();
 liveReloadServer.watch(__dirname);
-
-// Inject the livereload script into HTML
 app.use(connectLivereload());
 
-// Serve static files
-// app.use(express.static(path.join(__dirname)));
-app.use(express.static('public'))
+app.use(express.json());
+app.use(express.static('public')); // Serve public/index.html and script.js
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+// POST endpoint
+app.post('/test', (req, res) => {
+  const { num1, num2 } = req.body;
+  res.json({ num3: parseInt(num1) + parseInt(num2) });
 });
 
 app.listen(PORT, () => {
